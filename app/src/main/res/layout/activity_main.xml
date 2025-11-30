@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#161823"
+    tools:context=".MainActivity">
+
+    <!--顶部左右两侧的删除和预览按钮，用elevation悬浮-->
+    <ImageView
+        android:id="@+id/btn_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:elevation="10dp"
+        android:padding="8dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/btn_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/shape_tag_bg"
+        android:elevation="10dp"
+        android:gravity="center"
+        android:paddingHorizontal="12dp"
+        android:text="预览"
+        android:textColor="#333333"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 下面的工具栏 -->
+    <LinearLayout
+        android:id="@+id/bottom_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="分享"
+            android:textColor="#888888"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="限时日常"
+            android:textColor="#888888"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="👆发作品"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 屏幕正中可滑动的部分 -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/bottom_tabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="80dp"
+            android:paddingBottom="16dp">
+
+            <!-- 最上方大图预览区域 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vp_image_preview"
+                    android:layout_width="220dp"
+                    android:layout_height="440dp"
+                    android:background="#222222"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <!-- 悬浮的“编辑封面”按钮 -->
+                <TextView
+                    android:id="@+id/btn_edit_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="编辑封面"
+                    android:textColor="#3F51B5"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/shape_tag_bg"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="10dp"
+                    android:alpha="0.8"
+                    app:layout_constraintBottom_toBottomOf="@id/vp_image_preview"
+                    app:layout_constraintStart_toStartOf="@+id/vp_image_preview"
+                    app:layout_constraintEnd_toEndOf="@+id/vp_image_preview" />
+                    
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 缩略图列表，居中显示 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_image_thumbnails"
+                android:layout_width="wrap_content"
+                android:layout_height="72dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- 标题、内容、定位等 -->
+            <!--跟抖音一样，标题限制20字，到了还想输入就弹toast，而且按了回车直接跳到下面的内容部分-->
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="top|start"
+                android:hint="添加标题"
+                android:textStyle="bold"
+                android:textColorHint="#888888"
+                android:textColor="#FFFFFF"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:textSize="20sp"
+                android:layout_marginBottom="8dp"
+                android:nextFocusDown="@id/et_content"/>
+            <!-- 这里在内容区域加上ai帮写和字数统计 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/et_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top|start"
+                    android:hint="添加作品描述……"
+                    android:textColorHint="#888888"
+                    android:maxLines="5"
+                    android:minLines="2"
+                    android:inputType="textMultiLine"
+                    android:scrollbars="vertical"
+                    android:overScrollMode="always"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp" 
+                    android:paddingBottom="20dp"/>
+                <TextView
+                    android:id="@+id/tv_char_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/et_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="0/50"
+                    android:textColor="#666666"
+                    android:textSize="12sp"/>
+
+            </RelativeLayout>
+
+            <!-- 各种功能按钮 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="12dp">
+                <TextView
+                    android:id="@+id/btn_ai_write"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/shape_tag_bg"
+                    android:text="✨ AI帮写"
+                    android:gravity="center"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"/>
+                <TextView
+                    android:id="@+id/btn_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/shape_tag_bg"
+                    android:text="# 话题"
+                    android:gravity="center"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"/>
+                <TextView
+                    android:id="@+id/btn_at_friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@drawable/shape_tag_bg"
+                    android:text="\@ 朋友"
+                    android:gravity="center"
+                    android:paddingHorizontal="12dp"
+                    android:textColor="#333333"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:id="@+id/btn_zoom"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/shape_tag_bg"
+                    android:src="@android:drawable/ic_menu_crop"
+                    android:padding="6dp"
+                    app:tint="#333333"/>
+            </LinearLayout>
+
+            <!-- 热门话题 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_hot_topics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_topic_chip" 
+                tools:itemCount="1"/>
+
+            <!-- 位置 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tv_location"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:text="📍 你在哪里"
+                    android:textColor="#FFFFFF" 
+                    android:textSize="15sp"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_media_play"
+                    android:rotation="0"
+                    app:tint="#666666"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_nearby_locations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_topic_chip" 
+                tools:itemCount="1"/>
+
+            <!-- 其他入口 -->
+            <LinearLayout
+                android:id="@+id/layout_add_tag"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tv_label"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:text="🏷 添加标签"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"/>
+                 <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="#666666"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/tv_privacy"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:text="🔐 私密·仅自己可见"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"/>
+                 <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="#666666"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_advanced_settings"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+                <TextView
+                    android:id="@+id/layout_advanced_settings_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:text="⚙ 高级设置"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"/>
+                 <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@android:drawable/ic_media_play"
+                    app:tint="#666666"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
