@@ -21,7 +21,7 @@ AI 帮写文案：上传图片后，点击“AI 帮写”，模型会分析图�
 
 景点推荐：定位成功后，AI 会根据所在城市自动推荐当地著名的旅游景点或商圈。
 
-##注意：本项目使用Gemini-2.0-flash模型，请用户确保稳定的网络环境，使用自己的api key，测试用api key已私聊老师
+##注意：本项目使用Gemini-2.0-flash模型，请用户确保稳定的网络环境，使用自己的api key，测试用api keyAIzaSyDBjVYle_vLAyYMcXAQ8vUgu6uE_uL2NXg.已做限额，且3天后停用。
 
 
 3.精确位置服务
